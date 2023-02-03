@@ -1,0 +1,5 @@
+<input type="text" name="username" id="username" placeholder="Minecraft-Benutzername" class="contactform"><br>
+<input type="text" name="dcname" id="dcname" placeholder="Discord-Benutzername" class="contactform"><br>
+<input type="text" name="email" id="email" placeholder="E-Mail" class="contactform"><br>
+<textarea name="massage" id="message" cols="70" rows="24" placeholder="Nachricht" class="contactform"></textarea><br>
+<button id="send" onclick="sendform();" class="contactform btn">Senden</button>
