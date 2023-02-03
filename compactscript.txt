@@ -1,4 +1,3 @@
-function runcode() {
 let ip = document.getElementById("ip");
 let popup = document.createElement("span");
 popup.innerHTML = `<p class="copied">Server ip was copied.</p>`;
@@ -119,4 +118,3 @@ fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/body.tx
     // Use the text here
     document.body.innerHTML = text;
 });
-}
