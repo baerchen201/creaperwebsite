@@ -111,10 +111,3 @@ if (url.get("website") === "contact") {
             location.href = text;
         });
 }
-
-fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/body.txt?cache=" + Date.now())
-  .then(response => response.text())
-    .then(text => {
-    // Use the text here
-    document.body.innerHTML = text;
-});
