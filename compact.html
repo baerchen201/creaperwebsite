@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*body {
+    justify-content: center;
+    display: flex;
+}*/
+
+        body {
+            background-color: #333;
+        }
+
+        #editable {
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            padding: 10px 0px;
+            background-color: #222;
+        }
+
+        .logo {
+            height: 50px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        * {
+            transition: all 0.3s;
+        }
+
+        #ip,
+        .navbar a,
+        .btn {
+            position: relative;
+            font-size: 14px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 40px;
+            border: none;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .contactform {
+            margin-top: 10px;
+        }
+
+        @keyframes appear {
+            0% {
+                transform: translateY(-20px);
+                opacity: 20%;
+            }
+
+            to {
+                transform: none;
+                opacity: 100%;
+            }
+        }
+
+        .start-animation {
+            animation: appear 0.5s ease-in-out 0s 1 normal forwards;
+        }
+
+        .popup {
+            position: absolute;
+            top: 50px;
+            /* adjust as necessary */
+            left: 0;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 20px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            border: 1px solid gray;
+            z-index: 1;
+            display: none;
+            color: white;
+            width: fit-content;
+        }
+
+        .popup::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            /* adjust as necessary */
+            left: 20px;
+            /* adjust as necessary */
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid gray;
+            width: fit-content;
+        }
+    </style>
+    <script>
+        let ip = document.getElementById("ip");
+        let popup = document.createElement("span");
+        popup.innerHTML = `<p class="copied">Server ip was copied.</p>`;
+        popup.classList.add("popup");
+        ip.appendChild(popup);
+        const url = new URLSearchParams(window.location.search);
+        const serverip = "123.456.789.0:8080";
+
+        ip.onclick = function () {
+            popup.style.display = "block";
+            popup.style.animation = "appear 0.5s ease-in-out 0s 1 normal forwards";
+            copyToClipboard(serverip);
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 2000);
+        }
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                console.info("Text was copied to the clipboard");
+            } catch (error) {
+                console.error("Could not copy text: ", error);
+            }
+        }
+
+
+
+
+
+        if (url.get("website") === "contact") {
+            fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/contact.txt?cache=" + Date.now())
+                .then(response => response.text())
+                .then(text => {
+                    // Use the text here
+                    const html = text;
+                    document.getElementById("editable").innerHTML = html;
+                });
+
+            let uname = document.getElementById("username");
+            let dname = document.getElementById("dcname");
+            let mail = document.getElementById("email");
+            let msg = document.getElementById("message");
+
+            function sendform() {
+                if ((uname) && (dname) && (mail) && (msg)) {
+                    const post = `Benutzername: ${uname.value}
+    Discord-Name: ${dname.value}
+    Email: ${mail.value}
+    Nachricht: 
+    
+    ${msg.value}
+    
+    -----------------`
+
+                    console.log(post);
+                    postToDiscord(post);
+                } else {
+                    window.alert("Bitte alles ausfüllen");
+                    return;
+                }
+            }
+            function postToDiscord(text) {
+                //    var text = "This is a test message";
+                let webhookURL = "https://discord.com/api/webhooks/1071054149799649280/DOLDdwwhl31l9Zv8kcd6-2MH7moVQ5EYVurSi1aBW1PTOEpfoI2LMymxqeZM8LL7SkjK";
+                let request = new XMLHttpRequest();
+
+                request.open("POST", webhookURL, true);
+                request.setRequestHeader("Content-Type", "application/json");
+
+                request.onreadystatechange = function () {
+                    if ((request.readyState === 2 || request.readyState === 4) && request.status === 204) {
+                        if (request.readyState === 2) {
+                            console.log("Message ready to send...");
+                            console.log("(Ready state 2)");
+                        } else {
+                            console.log("Message posted successfully to Discord");
+                            console.log("Ready state: " + request.readyState);
+                            console.log("Status: " + request.status);
+
+                            location.reload();
+                        }
+                    } else {
+                        console.error("Failed to post message to Discord");
+                        console.log(request.readyState);
+                        console.log(request.status);
+                    }
+                };
+                request.send(JSON.stringify({ content: text }));
+            }
+        } else if (url.get("website") === "about") {
+            fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/about.txt?cache=" + Date.now())
+                .then(response => response.text())
+                .then(text => {
+                    // Use the text here
+                    const html = text;
+                    document.getElementById("editable").innerHTML = html;
+                });
+        } else if (url.get("website") === "start" || !window.location.search.includes("website=")) {
+            fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/main.txt?cache=" + Date.now())
+                .then(response => response.text())
+                .then(text => {
+                    // Use the text here
+                    const html = text;
+                    document.getElementById("editable").innerHTML = html;
+                });
+        } else if (url.get("website") === "dc") {
+            fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/dcurl?cache=" + Date.now())
+                .then(response => response.text())
+                .then(text => {
+                    // Use the text here
+                    location.href = text;
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <img src="https://github.com/baerchen201/creaperwebsite/blob/1470f05913560891bd90a36cc194bb3ce5149685/logo.png?raw=true"
+            alt="Logo" class="logo">
+        <a href="?website=start" id="start">Start</a>
+        <a href="#" id="ip">Server</a>
+        <a href="?website=dc" target="_blank">Discord</a>
+        <a href="?website=contact" id="contact">Kontaktieren</a>
+        <a href="?website=about" id="about">Über</a>
+    </div>
+    <span id="editable" class="editable">
+        Bitte warten...
+    </span>
+</body>
+
+</html>
