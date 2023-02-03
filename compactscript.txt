@@ -4,7 +4,13 @@ popup.innerHTML = `<p class="copied">Server ip was copied.</p>`;
 popup.classList.add("popup");
 ip.appendChild(popup);
 const url = new URLSearchParams(window.location.search);
-const serverip = "123.456.789.0:8080";
+var serverip;
+fetch("https://raw.githubusercontent.com/baerchen201/creaperwebsite/main/serverip?cache=" + Date.now())
+    .then(response => response.text())
+    .then(text => {
+        // Use the text here
+        serverip = text;
+    });
 
 ip.onclick = function () {
     popup.style.display = "block";
