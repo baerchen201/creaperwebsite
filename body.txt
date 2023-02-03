@@ -1,0 +1,11 @@
+<div class="navbar">
+            <img src="https://github.com/baerchen201/creaperwebsite/blob/1470f05913560891bd90a36cc194bb3ce5149685/logo.png?raw=true" alt="Logo" class="logo">
+            <a href="?website=start" id="start">Start</a>
+            <a href="#" id="ip">Server</a>
+            <a href="?website=dc" target="_blank">Discord</a>
+            <a href="?website=contact" id="contact">Kontaktieren</a>
+            <a href="?website=about" id="about">Über</a>
+        </div>
+        <span id="editable" class="editable">
+            Bitte warten...
+        </span>
